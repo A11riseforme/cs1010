@@ -1,0 +1,77 @@
+/**
+ * CS1010 Semester 1 AY18/19
+ * Assignment 4: Add
+ *
+ * @file: add.c
+ * @author: YANG CHENGLONG (Group 01)
+ */
+#include <string.h>
+#include <math.h>
+#include <stdio.h>
+
+void reverse_string(char test[], long length);
+
+int main() {
+    char *num1 = cs1010_read_word();
+    char *num2 = cs1010_read_word();
+    long num1_length = strlen(num1);
+    long num2_length = strlen(num2);
+    long max_length = (num1_length > num2_length) ? num1_length : num2_length;
+    char new_num1[max_length + 1];
+    char new_num2[max_length + 1];
+    long diff = abs(num1_length - num2_length);
+    char result[max_length + 1];
+    //result[max_length] = '0';
+    long tenth = 0;
+    long sum;
+    reverse_string(new_num1, max_length);
+    reverse_string(new_num2, max_length);
+    if (num1_length > num2_length) {
+        for (int i = 0; i < num2_length; i += 1) {
+            new_num2[i] = num2[i];
+        }
+        for (int i = 0; i < diff + 1; i += 1) {
+            new_num2[num2_length + i] = '0';
+        }
+        strcpy(new_num1,num1);
+        new_num1[max_length] = '0';
+    } else {
+        for (int i = 0; i < num1_length; i += 1) {
+            new_num1[i] = num1[i];
+        }
+        for (int i = 0; i < diff + 1; i += 1) {
+            new_num1[num1_length + i] = '0';
+        }
+        strcpy(new_num2,num2);
+        new_num2[max_length] = '0';
+    }
+
+    for (int i = 0; i < max_length + 1; i += 1) {
+        sum = ((new_num1[i] - '0') + (new_num2[i] - '0') + tenth) % 10 ;
+        result[i] = sum + '0';
+        tenth = ((int)(new_num1[i] - '0') + (int)(new_num2[i] - '0')) / 10;
+    }
+
+    reverse_string(result, max_length + 1);
+    cs1010_print_string(result);
+    /* 
+    int i = 0;
+    if (result[0] != '0') {
+        i = 1;
+    }
+    while (i < max_length + 1) {
+        if (result[i] >= 48 && result[i] <= 57) {
+            printf("%c",result[i]);
+            i += 1;
+        }
+    }
+    */
+}
+
+void reverse_string(char test[], long length) {
+    for (int i = 0; i < length / 2; i += 1) {
+        char temp = test[i];
+        test[i] = test[length - i - 1];
+        test[length -i -1] = temp;
+    }
+}

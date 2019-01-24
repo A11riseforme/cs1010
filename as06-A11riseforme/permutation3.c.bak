@@ -1,0 +1,57 @@
+/**
+ * CS1010 Semester 1 AY18/19
+ * Assignment 4: Permutation 3
+ * 
+ * This programme determines whether a string S2
+ * is the permutation of the substring of a string S1.
+ *
+ * @file: permutation3.c
+ * @author: YANG CHENGLONG (Group 01)
+ */
+#include "cs1010.h"
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
+bool is_frequency_portion(long *string1_frequency, long *string2_frequency, long length);
+void fsort(char *string, long *string_frequency, long num);
+
+int main() {
+    char *string1 = cs1010_read_word();
+    char *string2 = cs1010_read_word();
+    long string1_length = strlen(string1);
+    long string2_length = strlen(string2);
+
+    long *string1_frequency = calloc(26, sizeof(long));
+    long *string2_frequency = calloc(26, sizeof(long));
+
+    fsort(string1, string1_frequency, string1_length);
+    fsort(string2, string2_frequency, string2_length);
+
+    if (is_frequency_portion(string2_frequency, string1_frequency, 26)) {
+        cs1010_print_string("YES");
+    } else {
+        cs1010_print_string("NO");
+    }
+    free(string1);
+    free(string2);
+    free(string1_frequency);
+    free(string2_frequency);
+}
+
+bool is_frequency_portion(long *string1_frequency, long *string2_frequency, long length) {
+    for (long i = 0; i < length; i += 1) {
+        if (*(string2_frequency + i) != 0) {
+            if (*(string1_frequency + i) != *(string2_frequency + i)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+void fsort(char *string, long *string_frequency, long num) {
+    for (long i = 0; i < num; i += 1) {
+        *(string_frequency + (*(string + i) - 'a')) += 1;
+    }
+}
